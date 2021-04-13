@@ -1,27 +1,31 @@
-from flask import Flask, request
-from urllib.parse import quote
-import os
-import requests
 import json
+import os
 import time
+from urllib.parse import quote
 
+import requests
+from flask import Flask, request
+from dotenv import load_dotenv
 
+load_dotenv()
 app = Flask(__name__)
 
 
-@app.route("/urlscan", methods=["GET"])
+@app.route("/urlscan")
 def urlscan():
-    url_to_scan = request.args.get("url")  # get the query from the url
+    url_to_scan = request.args.get("url")  # get the query from thblacke url
     privacy = request.args.get("option")  # Set the privacy of the scan
     headers = {
-        "API-Key": os.environ.get("URLSCAN_IO_KEY"),  # Your api key for urlscan.io
+        "API-Key": os.getenv("URLSCAN_IO_KEY"),  # Your api key for urlscan.io
         "Content-Type": "application/json",
     }
+    data = {"url": f"{url_to_scan}", "visibility": f"{privacy}"}
     response = requests.post(
         "https://urlscan.io/api/v1/scan/",
         headers=headers,
-        data={"url": f"{url_to_scan}", "visibility": f"{privacy}"},
+        data=json.dumps(data),
     ).json()
+
     uuid = response["uuid"]  # You need the uuid to get the report of your scan
     time.sleep(30)  # You need to wait for the server to process your request
     scan_results = requests.get(f"https://urlscan.io/api/v1/result/{uuid}/").json()
@@ -38,7 +42,7 @@ def urlscan():
 @app.route("/opswat")
 def opswat():
     domain_to_scan = request.args.get("domain")  # get the query from the url
-    headers = {"apikey": os.environ.get("OPSWAT_KEY")}  # your api key for opswat
+    headers = {"apikey": os.getenv("OPSWAT_KEY")}  # your api key for opswat
     response = requests.get(
         f"https://api.metadefender.com/v4/domain/{domain_to_scan}", headers=headers
     ).json()
@@ -49,7 +53,7 @@ def opswat():
 @app.route("/opswaturl")
 def opswaturl():
     domain = quote(request.args.get("d"), safe="")  # encode :// to %3A%2F%2F
-    headers = {"apikey": os.environ.get("OPSWAT_KEY")}  # your api key for opswat
+    headers = {"apikey": os.getenv("OPSWAT_KEY")}  # your api key for opswat
     response = requests.get(
         f"https://api.metadefender.com/v4/url/{domain}", headers=headers
     ).json()  # make sure the response is json
