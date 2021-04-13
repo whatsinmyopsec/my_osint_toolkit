@@ -26,5 +26,5 @@ yarn-error.log*
 # environment
 .env
 .flaskenv
-venv/
+./api/venv/*
 __pycache__/
