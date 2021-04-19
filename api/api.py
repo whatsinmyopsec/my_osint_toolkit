@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 
 
-@app.route("/urlscan")
+@app.route("/url/urlscan")
 def urlscan():
     url_to_scan = request.args.get("url")  # get the query from thblacke url
     privacy = request.args.get("option")  # Set the privacy of the scan
@@ -38,19 +38,7 @@ def urlscan():
 # verdicts_overall_malicious = scan_results['verdicts']['overall']['malicious']
 # task_report_URL = scan_results['task']['reportURL']
 
-
-@app.route("/opswat")
-def opswat():
-    domain_to_scan = request.args.get("domain")  # get the query from the url
-    headers = {"apikey": os.getenv("OPSWAT_KEY")}  # your api key for opswat
-    response = requests.get(
-        f"https://api.metadefender.com/v4/domain/{domain_to_scan}", headers=headers
-    ).json()
-
-    return response
-
-
-@app.route("/opswaturl")
+@app.route("/url/opswat")
 def opswaturl():
     domain = quote(request.args.get("d"), safe="")  # encode :// to %3A%2F%2F
     headers = {"apikey": os.getenv("OPSWAT_KEY")}  # your api key for opswat
@@ -61,7 +49,7 @@ def opswaturl():
     return response
 
 
-@app.route("/vturl")
+@app.route("/url/vt")
 def vturl():
     query = request.args.get("query")
     url = "https://www.virustotal.com/vtapi/v2/url/scan"
@@ -74,3 +62,39 @@ def vturl():
     params = {"apikey": os.environ.get("VT_KEY"), "resource": f"{resource}"}
     response = requests.get(urlreport, params=params).json()
     return response
+
+
+@app.route("/domain/opswat")
+def opswat():
+    domain_to_scan = request.args.get("domain")  # get the query from the url
+    headers = {"apikey": os.getenv("OPSWAT_KEY")}  # your api key for opswat
+    response = requests.get(
+        f"https://api.metadefender.com/v4/domain/{domain_to_scan}", headers=headers
+    ).json()
+
+    return response
+
+ 
+@app.route("/domain/vt")
+def vt_domain():
+    domain = request.args.get("domain")
+    url = "https://www.virustotal.com/vtapi/v2/domain/report"
+    params = {"apikey": os.environ.get("VT_KEY"), "domain": f"{domain}"}
+    response = requests.get(url, params=params).json()
+    return response
+
+@app.route("/file/vt")
+def vt_file():
+    upload = request.args.get("file") # must give absolute path
+    url = 'https://www.virustotal.com/vtapi/v2/file/scan'
+    params = {"apikey": os.environ.get("VT_KEY")}
+    files = {'file': (upload, open(upload, 'rb'))} 
+    response = requests.post(url, files=files, params=params).json()
+
+    resource = response["resource"]
+    time.sleep(15)
+    url = 'https://www.virustotal.com/vtapi/v2/file/report'
+    params = {"apikey": os.environ.get("VT_KEY"), "resource": f"{resource}"}
+    response = requests.get(url, params=params)
+     
+    return response.json()
