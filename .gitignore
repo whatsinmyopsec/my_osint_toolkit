@@ -31,3 +31,6 @@ package-lock.json
 .flaskenv
 /api/venv
 __pycache__/
+
+# experimental files
+/api/test.py
