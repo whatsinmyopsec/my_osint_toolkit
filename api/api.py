@@ -6,7 +6,7 @@ from urllib.parse import quote
 import requests
 from flask import Flask, request
 from dotenv import load_dotenv
-from ip import abuse_ip
+
 load_dotenv()
 app = Flask(__name__)
 
@@ -157,4 +157,14 @@ def abuse_ip():
     get_headers = {"Accept": "application/json", "Key": os.environ.get("ABUSEIPDB_KEY")}
     response = requests.get(url, headers=get_headers, params=querystring)
 
-    return response.json()    
+    return response.json()
+
+
+@app.route("/ip/vt")
+def vt_ip():
+    ip = request.args.get("ip")
+    url = "https://www.virustotal.com/vtapi/v2/ip-address/report"
+    params = {"apikey": os.environ.get("VT_KEY"), "ip": f"{ip}"}
+    response = requests.get(url, params=params)
+
+    return response.json()

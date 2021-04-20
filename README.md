@@ -44,7 +44,6 @@ flask run
     /url/urlscan?url=
     /url/opswat?d=
     /url/vt?query=
-
 ### Domain Scan
     /domain/opswat?domain=
     /domain/vt?domain=
@@ -56,3 +55,4 @@ flask run
 ### IP scan
     /ip/ibm?ip=
     /ip/abuse?ip=
+    /ip/vt?ip=
