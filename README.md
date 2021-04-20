@@ -41,18 +41,18 @@ To run server
 flask run
 ```
 ### URL Scan
-    /url/urlscan?url=\
-    /url/opswat?d=\
+    /url/urlscan?url=
+    /url/opswat?d=
     /url/vt?query=
 
 ### Domain Scan
-    /domain/opswat?domain=\
+    /domain/opswat?domain=
     /domain/vt?domain=
 ### File scan
-    /file/vt?file=\
+    /file/vt?file=
     /file/opswat?file=
 ### DNS Scan
     /dns/ibm?url=
 ### IP scan
-    /ip/ibm?ip=\
+    /ip/ibm?ip=
     /ip/abuse?ip=
