@@ -113,7 +113,7 @@ def opswat_file():
     response_post = requests.post(url, data=upload, headers=headers).json()
 
     dataID = response_post["data_id"]
-    time.sleep(15)
+    time.sleep(15)  # wait for file to be generated
     urlScan = "https://api.metadefender.com/v4/file/" + dataID
     get_headers = {"apikey": os.getenv("OPSWAT_KEY")}
     response = requests.get(urlScan, headers=get_headers)
@@ -128,8 +128,23 @@ def ibm_url():
     get_headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}',
+        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}',  # ibm_key:ibm_key_passwd base 64 encoded...
     }
     response = requests.get(url, headers=get_headers)
 
     return response.json()
+
+
+@app.route("/ip/ibm")
+def ibm_ip():
+    ip_to_scan = request.args.get("ip")
+    url = f"https://api.xforce.ibmcloud.com/ipr/{ip_to_scan}"
+    get_headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}', 
+    }
+    response = requests.get(url, headers=get_headers)
+
+    return response.json()
+  
