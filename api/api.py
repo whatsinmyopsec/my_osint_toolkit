@@ -142,9 +142,19 @@ def ibm_ip():
     get_headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}', 
+        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}',
     }
     response = requests.get(url, headers=get_headers)
 
     return response.json()
-  
+
+
+@app.route("/ip/abuse")
+def abuse_ip():
+    ip_to_check = request.args.get("ip")
+    url = "https://api.abuseipdb.com/api/v2/check"
+    querystring = {"ipAddress": f"{ip_to_check}", "maxAgeInDays": "90"}
+    get_headers = {"Accept": "application/json", "Key": os.environ.get("ABUSEIPDB_KEY")}
+    response = requests.get(url, headers=get_headers, params=querystring)
+
+    return response.json()
