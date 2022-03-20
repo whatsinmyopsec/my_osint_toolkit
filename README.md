@@ -33,16 +33,19 @@ FLASK_ENV=development
 
 
 ### Check for any conflicts in installed packages
+
 ```
 pip check
 ```
 
 ### Update list of pinned requirements
+
 ```
-pip freeze > $target_requirements
+pip freeze > ..\requirements.txt
 ```
 
 ### Create .env
+
 ```
 URLSCAN_IO_KEY=$your_key
 OPSWAT_KEY=$your_key
@@ -58,21 +61,27 @@ GREYNOISE_KEY=$your_key
 
 
 ### Start server
+
 ```
 flask run
 ```
+
 ### URL Scan
     /url/urlscan?url=
     /url/opswat?d=
     /url/vt?query=
+
 ### Domain Scan
     /domain/opswat?domain=
     /domain/vt?domain=
+
 ### File scan
     /file/vt?file=
     /file/opswat?file=
+
 ### DNS Scan
     /dns/ibm?url=
+
 ### IP scan
     /ip/ibm?ip=
     /ip/abuse?ip=
