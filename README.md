@@ -28,17 +28,17 @@ FLASK_ENV=development
 ## Development
 
 
-Check for any conflicts in installed packages
+### Check for any conflicts in installed packages
 ```
 pip check
 ```
 
-Update list of pinned requirements
+### Update list of pinned requirements
 ```
 pip freeze > $target_requirements
 ```
 
-Create .env
+### Create .env
 ```
 URLSCAN_IO_KEY=$your_key
 OPSWAT_KEY=$your_key
