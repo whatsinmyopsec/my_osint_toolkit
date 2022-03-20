@@ -1,4 +1,6 @@
-# Setup
+## Setup
+
+---
 
 Clone project \
 cd into api folder
@@ -24,6 +26,20 @@ FLASK_APP=api.py
 FLASK_ENV=development
 ```
 
+## Development
+
+---
+
+Check for any conflicts in installed packages
+```
+pip check
+```
+
+Update list of pinned requirements
+```
+pip freeze > $target_requirements
+```
+
 Create .env
 ```
 URLSCAN_IO_KEY=$your_key
@@ -33,10 +49,14 @@ IBM_KEY=$your_key
 IBM_KEY_PASSWD=$your_key_password
 IBM_AUTH_TOKEN=$base64 encode of IBM_KEY:IBM_KEY_PASSWD
 ABUSEIPDB_KEY=$your_key
+IPINFO_TOKEN=$your_token
+GREYNOISE_KEY=$your_key
 ```
+## Boot up
 
+---
 
-To run server
+start server
 ```
 flask run
 ```
@@ -57,3 +77,4 @@ flask run
     /ip/abuse?ip=
     /ip/vt?ip=
     /ip/ipinfo?ip=
+    /ip/greynoise?ip=
