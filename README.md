@@ -1,25 +1,29 @@
 ## Setup
 
 
-Clone project \
-cd into api folder
+### Clone project 
+### cd into api folder
 
-Create venv
+### Create venv
+
 ```python
 python -m venv venv
 ```
 
-Activate venv
+### Activate venv
+
 ```
 .\venv\Scripts\activate
 ```
 
-Install requirements
+### Install requirements
+
 ```
 pip install -r ..\requirements.txt
 ```
 
-Create .flaskenv file in api folder
+### Create .flaskenv file in api folder
+
 ```
 FLASK_APP=api.py
 FLASK_ENV=development
