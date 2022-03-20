@@ -1,6 +1,5 @@
 ## Setup
 
----
 
 Clone project \
 cd into api folder
@@ -28,7 +27,6 @@ FLASK_ENV=development
 
 ## Development
 
----
 
 Check for any conflicts in installed packages
 ```
@@ -54,7 +52,6 @@ GREYNOISE_KEY=$your_key
 ```
 ## Boot up
 
----
 
 start server
 ```
