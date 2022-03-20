@@ -1,3 +1,4 @@
+from cgitb import handler
 import json
 import os
 import time
@@ -6,6 +7,7 @@ from urllib.parse import quote
 import requests
 from flask import Flask, request
 from dotenv import load_dotenv
+import ipinfo
 
 load_dotenv()
 app = Flask(__name__)
@@ -13,7 +15,7 @@ app = Flask(__name__)
 
 @app.route("/url/urlscan")
 def urlscan_url():
-    url_to_scan = request.args.get("url")  # get the query from thblacke url
+    url_to_scan = request.args.get("url")  # get the query from the url
     privacy = request.args.get("option")  # Set the privacy of the scan
     headers = {
         "API-Key": os.getenv("URLSCAN_IO_KEY"),  # Your api key for urlscan.io
@@ -128,7 +130,8 @@ def ibm_url():
     get_headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}',  # ibm_key:ibm_key_passwd base 64 encoded...
+        # ibm_key:ibm_key_passwd base 64 encoded...
+        "Authorization": f'Basic {os.environ.get("IBM_AUTH_TOKEN")}',
     }
     response = requests.get(url, headers=get_headers)
 
@@ -166,5 +169,24 @@ def vt_ip():
     url = "https://www.virustotal.com/vtapi/v2/ip-address/report"
     params = {"apikey": os.environ.get("VT_KEY"), "ip": f"{ip}"}
     response = requests.get(url, params=params)
+
+    return response.json()
+
+
+@app.route("/ip/ipinfo")
+def ipinfo_ip():
+    access_token = os.environ.get("IPINFO_TOKEN")
+    handler = ipinfo.getHandler(access_token)
+    ip = request.args.get("ip")
+    response = handler.getDetails(ip)
+    return response.all
+
+
+@app.route("/ip/greynoise")
+def greynoise_ip():
+    ip = request.args.get("ip")
+    url = f"https://api.greynoise.io/v3/community/{ip}"
+    headers = {"Accept": "application/json", "key": os.environ.get("GREYNOISE_KEY")}
+    response = requests.get(url, headers=headers)
 
     return response.json()

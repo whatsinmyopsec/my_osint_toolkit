@@ -5,7 +5,7 @@ cd into api folder
 
 Create venv
 ```python
-python3 -m venv venv
+python -m venv venv
 ```
 
 Activate venv
@@ -15,7 +15,7 @@ Activate venv
 
 Install requirements
 ```
-pip install -r requirements.txt
+pip install -r ..\requirements.txt
 ```
 
 Create .flaskenv file in api folder
@@ -56,3 +56,4 @@ flask run
     /ip/ibm?ip=
     /ip/abuse?ip=
     /ip/vt?ip=
+    /ip/ipinfo?ip=
