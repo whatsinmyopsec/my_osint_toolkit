@@ -53,7 +53,7 @@ GREYNOISE_KEY=$your_key
 ## Boot up
 
 
-start server
+### Start server
 ```
 flask run
 ```
