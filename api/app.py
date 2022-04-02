@@ -10,35 +10,13 @@ from dotenv import load_dotenv
 import ipinfo
 
 load_dotenv()
+
 app = Flask(__name__)
 
 
-@app.route("/url/urlscan")
-def urlscan_url():
-    url_to_scan = request.args.get("url")  # get the query from the url
-    privacy = request.args.get("option")  # Set the privacy of the scan
-    headers = {
-        "API-Key": os.getenv("URLSCAN_IO_KEY"),  # Your api key for urlscan.io
-        "Content-Type": "application/json",
-    }
-    data = {"url": f"{url_to_scan}", "visibility": f"{privacy}"}
-    response = requests.post(
-        "https://urlscan.io/api/v1/scan/",
-        headers=headers,
-        data=json.dumps(data),
-    ).json()
-
-    uuid = response["uuid"]  # You need the uuid to get the report of your scan
-    time.sleep(30)  # You need to wait for the server to process your request
-    scan_results = requests.get(f"https://urlscan.io/api/v1/result/{uuid}/").json()
-
-    return scan_results
-
-
-# task_url = scan_results['task']['url']
-# verdicts_overall_score = scan_results['verdicts']['overall']['score']
-# verdicts_overall_malicious = scan_results['verdicts']['overall']['malicious']
-# task_report_URL = scan_results['task']['reportURL']
+@app.route("/")
+def hello():
+    return "Hello World!"
 
 
 @app.route("/url/opswat")

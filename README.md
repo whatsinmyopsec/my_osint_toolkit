@@ -67,7 +67,6 @@ flask run
 ```
 
 ### URL Scan
-    /url/urlscan?url=
     /url/opswat?d=
     /url/vt?query=
 
