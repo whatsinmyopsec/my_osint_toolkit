@@ -21,7 +21,7 @@ def hello():
 
 @app.route("/url/opswat")
 def opswat_url():
-    domain = quote(request.args.get("d"), safe="")  # encode :// to %3A%2F%2F
+    domain = quote(request.args.get("url"), safe="")  # encode :// to %3A%2F%2F
     headers = {"apikey": os.getenv("OPSWAT_KEY")}  # your api key for opswat
     response = requests.get(
         f"https://api.metadefender.com/v4/url/{domain}", headers=headers
@@ -32,7 +32,7 @@ def opswat_url():
 
 @app.route("/url/vt")
 def vt_url():
-    query = request.args.get("query")
+    query = request.args.get("url")
     url = "https://www.virustotal.com/vtapi/v2/url/scan"
     params = {"apikey": os.environ.get("VT_KEY"), "url": f"{query}"}
     response_post = requests.post(url, data=params).json()

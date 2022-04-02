@@ -21,7 +21,7 @@ class FlaskTest(unittest.TestCase):
 
     def test_url_opswat(self):
         tester = app.test_client(self)
-        url = "/url/opswat?d=https://www.google.com"
+        url = "/url/opswat?url=https://www.google.com"
         mock_request_headers = {"apikey": os.getenv("OPSWAT_KEY")}
 
         response = tester.get(url, headers=mock_request_headers)
