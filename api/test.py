@@ -26,6 +26,24 @@ class FlaskTest(unittest.TestCase):
 
         response = tester.get(url, headers=mock_request_headers)
         self.assertEqual(response.status_code, 200)
+    
+    def test_url_opswat_malicious(self):
+        tester = app.test_client(self)
+        url = "/url/opswat?url=https://www.magic4you.nu"
+        mock_request_headers = {"apikey": os.getenv("OPSWAT_KEY")}
+
+        response = tester.get(url, headers=mock_request_headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b'{"Api": "opswat", "Possitive_tags": {"assessment": ["high risk", "Malware"], "provider": ["webroot.com", "avira.com"]}}')
+
+    def test_url_opswat_safe(self):
+        tester = app.test_client(self)
+        url = "/url/opswat?url=google.com"
+        mock_request_headers = {"apikey": os.getenv("OPSWAT_KEY")}
+
+        response = tester.get(url, headers=mock_request_headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b'{"Api": "opswat", "address": "google.com", "threat_level": "No Threat Detected"}')
 
     def test_opswat_domain(self):
         tester = app.test_client(self)
@@ -56,7 +74,7 @@ class FlaskTest(unittest.TestCase):
 
     def test_abuse_ip(self):
         tester = app.test_client(self)
-        url = "/ip/abuse?ip=142.251.117.103"
+        url = "/ip/abuse?ip=197.163.85.251"
         mock_headers = {
             "Accept": "application/json",
             "Key": os.environ.get("ABUSEIPDB_KEY"),

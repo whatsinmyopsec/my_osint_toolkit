@@ -29,14 +29,18 @@ def opswat_url():
     ).json()  # make sure the response is json
     # return json.dumps(response)
     if response["lookup_results"]["detected_by"] == 0:
-        result = {"address": response["address"], "threat_level": "No Threat Detected"}
+        result = {"Api":"opswat_URL","address": response["address"], "threat_level": "No Threat Detected"}
         return json.dumps(result)
 
     arr = []
+    ray = []
     for i in response["lookup_results"]["sources"]:
         if i["status"] < 5:
-            arr.append(i)
-    return json.dumps(arr)
+            arr.append(i["assessment"])
+            ray.append(i["provider"])
+            a = {"assessment":arr,"provider":ray}       
+    result = {"Api":"opswat_URL","Possitive_tags": a}
+    return json.dumps(result)
 
 
 @app.route("/url/vt")
@@ -52,7 +56,7 @@ def vt_url():
     params = {"apikey": os.environ.get("VT_KEY"), "resource": f"{resource}"}
     response = requests.get(urlreport, params=params).json()
     if response["positives"] == 0:
-        result = {"address": response["resource"], "threat_level": "No Threat Detected"}
+        result = {"Api":"VirusTotal","address": response["resource"], "threat_level": "No Threat Detected"}
         return json.dumps(result)
 
     arr = []
@@ -60,8 +64,8 @@ def vt_url():
         if response["scans"][i]["detected"]:
             arr.append(i)
 
-    result = {"Detected_by": arr}
-    return result
+    result = {"Api":"VirusTotal","Detected_by": arr}
+    return json.dumps(result)
 
 
 @app.route("/domain/opswat")
@@ -71,8 +75,18 @@ def opswat_domain():
     response = requests.get(
         f"https://api.metadefender.com/v4/domain/{domain_to_scan}", headers=headers
     ).json()
-
-    return response
+    if response["lookup_results"]["detected_by"] == 0:
+        result = {"Api":"opswat_domain","address": response["address"], "threat_level": "No Threat Detected"}
+        return json.dumps(result)
+    arr = []
+    ray = []
+    for i in response["lookup_results"]["sources"]:
+        if i["status"] < 5:
+            arr.append(i["assessment"])
+            ray.append(i["provider"])
+            a = {"assessment":arr,"provider":ray}       
+    result = {"Api":"opswat_domain","Possitive_tags": a}
+    return json.dumps(result)       
 
 
 @app.route("/domain/vt")
