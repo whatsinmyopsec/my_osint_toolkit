@@ -67,8 +67,8 @@ flask run
 ```
 
 ### URL Scan
-    /url/opswat?d=
-    /url/vt?query=
+    /url/opswat?url=
+    /url/vt?url=
 
 ### Domain Scan
     /domain/opswat?domain=

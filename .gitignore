@@ -58,3 +58,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+opswat_positive
+vt_neg
+vt_pos

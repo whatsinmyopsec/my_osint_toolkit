@@ -2,6 +2,7 @@ from cgitb import handler
 import json
 import os
 import time
+
 from urllib.parse import quote
 
 import requests
@@ -26,8 +27,15 @@ def opswat_url():
     response = requests.get(
         f"https://api.metadefender.com/v4/url/{domain}", headers=headers
     ).json()  # make sure the response is json
-
-    return response
+    # return json.dumps(response)
+    if response["lookup_results"]["detected_by"] == 0:
+        result = {"address":response["address"],"threat_level":"No Threat Detected"}
+        return json.dumps(result)
+    arr = []
+    for i in response["lookup_results"]["sources"]:
+        if(i['status'] < 5):
+            arr.append(i)
+    return json.dumps(arr)
 
 
 @app.route("/url/vt")
@@ -42,7 +50,17 @@ def vt_url():
     urlreport = "https://www.virustotal.com/vtapi/v2/url/report"
     params = {"apikey": os.environ.get("VT_KEY"), "resource": f"{resource}"}
     response = requests.get(urlreport, params=params).json()
-    return response
+    if response["positives"] == 0:
+        result = {"address":response["resource"],"threat_level":"No Threat Detected"}
+        return json.dumps(result)
+
+    arr = []
+    for i in response["scans"]:
+        if response["scans"][i]["detected"]:
+                arr.append(i)
+    
+    result = {"Detected_by":arr}
+    return result
 
 
 @app.route("/domain/opswat")
